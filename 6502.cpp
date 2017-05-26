@@ -1,15 +1,28 @@
 #include <iostream>
-
-using namespace std;
+#include <memory>
 
 typedef const unsigned short OPCODE;
+typedef unsigned char   U8;
+typedef unsigned short U16;
+typedef unsigned int   U32;
 
 namespace OPCODES
 {
 ///    Type---MNEMONIC-----OPCODE------ADDRESING MODE--------FLAGS--------Comments------------------------------
     /**                                                               
-        Add Memory to Accumulator with Carry                          
-                                                                                                              */
+        Add Memory to Accumulator with Carry    
+
+        ORIGINAL MNEMONIC: ADC
+
+        Possible modes:
+        	Immediate
+        	Absolute
+        	Absolute X
+        	Absolute Y
+        	Zero Page
+        	Zero Page X
+        	Indexed Indirect                      
+    */
     OPCODE ADC_I    =     0x69;/*       Immediate          CZ---VN                                            */
     OPCODE ADC_ABS  =     0x6d;/*       Absolute           CZ---VN                                            */
     OPCODE ADC_ABSX =     0x7d;/*       Absolute,X         CZ---VN                                            */
@@ -19,7 +32,18 @@ namespace OPCODES
     OPCODE ADC_IX   =     0x61;/*       Indexed Indirect   CZ---VN                                            */
     OPCODE ADC_XI   =     0x71;/*       Indirect Indexed   CZ---VN                                            */
     /**                                                                           
-        AND Memory with Accumulator                                   
+        AND Memory with Accumulator
+
+        ORIGINAL MNEMONIC: AND
+
+        Possible modes:
+        	Immediate
+        	Absolute
+        	Absolute X
+        	Absolute Y
+        	Zero Page
+        	Zero Page X
+        	Indexed Indirect                                  
     *                                                                                                         */
     OPCODE AND_I    =     0x29;/*       Immediate          -Z----N                                            */
     OPCODE AND_ABS  =     0x2d;/*       Absolute           -Z----N                                            */
@@ -30,7 +54,16 @@ namespace OPCODES
     OPCODE AND_IX   =     0x21;/*       Indexed Indirect   -Z----N                                            */
     OPCODE AND_XI   =     0x31;/*       Indirect Indexed   -Z----N                                            */
     /**                                                  
-        Shift Left One Bit (Memory or Accumulator)       
+        Shift Left One Bit (Memory or Accumulator)  
+
+        ORIGINAL MNEMONIC: ASL
+
+        Possible modes:
+        	Accumulator
+        	Absolute
+        	Absolute X
+        	Zero Page
+        	Zero Page X     
     *                                                                                                         */
     OPCODE ASL_ACC  =     0x0a;/*        Accumulator       CZ----N                                            */
     OPCODE ASL_ABS  =     0x0e;/*        Absolute          CZ----N                                            */
@@ -43,14 +76,23 @@ namespace OPCODES
     OPCODE BCC      =     0x90;/*        Relative          -------         Branch on Carry Clear              */
     OPCODE BCS      =     0xb0;/*        Relative          -------         Branch on Carry Set                */
     OPCODE BEQ      =     0xf0;/*        Relative          -------         Branch on Result Zero              */
-    OPCODE BIT_ABS  =     0x2c;/*        Absolute          -Z---VN         Test Bits in Memory with Accumulator*/
-    OPCODE BIT_ZP   =     0x24;/*        Zero Page         -Z---VN         Test Bits in Memory with Accumulator*/
     OPCODE BMI      =     0x30;/*        Relative          -------         Branch on Result Minus             */
     OPCODE BNE      =     0xd0;/*        Relative          -------         Branch on Result not Zero          */
     OPCODE BPL      =     0x10;/*        Relative          -------         Branch on Result Plus              */
     OPCODE BRK      =     0x00;/*        Implied           -------         Force Break                        */
     OPCODE BVC      =     0x50;/*        Relative          -------         Branch on Overflow Clear           */    
-    OPCODE BVS      =     0x70;/*        Relative          -------         Branch on Overflow Set             */    
+    OPCODE BVS      =     0x70;/*        Relative          -------         Branch on Overflow Set             */ 
+    /**
+		Test Bits in Memory with Accumulator
+
+		ORIGINAL MNEMONIC: BIT
+
+        Possible modes:
+        	Absolute
+        	Zero Page
+    **/
+    OPCODE BIT_ABS  =     0x2c;/*        Absolute          -Z---VN         Test Bits in Memory with Accumulator*/
+    OPCODE BIT_ZP   =     0x24;/*        Zero Page         -Z---VN         Test Bits in Memory with Accumulator*/   
     /**
         Clear functions
     **/
@@ -60,6 +102,18 @@ namespace OPCODES
     OPCODE CLV      =     0xb8;/*        Implied           -----V-         Clear Overflow Flag                */
     /**
         Compare Memory with Accumulator
+
+        ORIGINAL MNEMONIC: CMP
+
+        Possible modes:
+        	Immediate
+        	Absolute
+        	Absolute X
+        	Absolute Y
+        	Zero Page
+        	Zero Page X
+        	Indexed Indirect
+        	Indirect Indexed
     **/    
     OPCODE CMP_I    =     0xc9;/*        Immediate         CZ----N                                            */    
     OPCODE CMP_ABS  =     0xcd;/*        Absolute          CZ----N                                            */    
@@ -71,18 +125,40 @@ namespace OPCODES
     OPCODE CMP_XI   =     0xd1;/*        Indirect Indexed  CZ----N                                            */
     /**
         Compare Memory and Index X
+
+        ORIGINAL MNEMONIC: CPX
+
+        Possible modes:
+        	Immediate
+        	Absolute
+        	Zero Page
     **/    
     OPCODE CPX_I    =     0xe0;/*        Immediate         CZ----N                                            */    
     OPCODE CPX_ABS  =     0xec;/*        Absolute          CZ----N                                            */    
     OPCODE CPX_ZP   =     0xe4;/*        Zero Page         CZ----N                                            */    
     /**
         Compare Memory and Index Y
+
+        ORIGINAL MNEMONIC: CPY
+
+        Possible modes:
+            Immediate
+            Absolute
+        	Zero Page
     **/
     OPCODE CPY_I    =     0xc0;/*        Immediate         CZ----N                                            */    
     OPCODE CPY_ABS  =     0xcc;/*        Absolute          CZ----N                                            */    
     OPCODE CPY_ZP   =     0xc4;/*        Zero Page         CZ----N                                            */    
     /**
         Decrement Memory by One
+
+        ORIGINAL MNEMONIC: DEC
+
+        Possible modes:
+        	Absolute
+        	Absolute X
+        	Zero Page
+        	Zero Page X
     **/
     OPCODE DEC_ABS  =     0xce;/*        Absolute          -Z----N                                            */    
     OPCODE DEC_ABSX =     0xde;/*        Absolute,X        -Z----N                                            */    
@@ -93,6 +169,18 @@ namespace OPCODES
     OPCODE DEY      =     0x88;/*        Implied           -Z----N         Decrement Index Y by One           */    
     /**
         Exclusive-OR Memory with Accumulator
+
+        ORIGINAL MNEMONIC: EOR
+
+        Possible modes:
+        	Immediate
+        	Absolute
+        	Absolute X
+        	Absolute Y
+        	Zero Page
+        	Zero Page X
+        	Indexed Indirect
+        	Indirect Indexed
     **/
     OPCODE EOR =         0x49;/*        Immediate          -Z----N                                            */    
     OPCODE EOR =         0x4d;/*        Absolute           -Z----N                                            */    
@@ -104,66 +192,134 @@ namespace OPCODES
     OPCODE EOR =         0x51;/*        Indirect Indexed   -Z----N                                            */    
     /**
         Increment Memory by One
+
+        ORIGINAL MNEMONIC: INC
+
+        Possible modes:
+        	Absolute
+        	Absolute X
+        	Zero Page
+        	Zero Page X
     **/
     OPCODE INC =         0xee;/*        Absolute           -Z----N                                            */    
     OPCODE INC =         0xfe;/*        Absolute,X         -Z----N                                            */    
     OPCODE INC =         0xe6;/*        Zero Page          -Z----N                                            */    
     OPCODE INC =         0xf6;/*        Zero Page,X        -Z----N                                            */
-    /****/    
     OPCODE INX =         0xe8;/*        Implied            -Z----N         Increment Index X by One           */    
-    OPCODE INY =         0xc8;/*        Implied            -Z----N         Increment Index Y by One           */    
+    OPCODE INY =         0xc8;/*        Implied            -Z----N         Increment Index Y by One           */
+    /**
+		Jump to New Location
+
+        ORIGINAL MNEMONIC: JMP
+
+        Possible modes:
+        	Indirect
+        	Absolute
+    **/    
     OPCODE JMP =         0x4c;/*        Absolute           -------         Jump to New Location               */    
     OPCODE JMP =         0x6c;/*        Indirect           -------         Jump to New Location               */    
     OPCODE JSR =         0x20;/*        Absolute           -------         Jump to New Location 
                                                                                 (Saving Return Address)       */    
     /**
         Load Accumulator with Memory
+		
+        ORIGINAL MNEMONIC: LDA
+
+        Possible modes:
+        	Immediate
+        	Absolute
+        	Absolute X
+        	Absolute Y
+        	Zero Page
+        	Zero Page X
+        	Indexed Indirect
+        	Indirect Indexed
     **/
-    OPCODE LDA =         0xa9;/*        Immediate          -Z----N                                            */    
-    OPCODE LDA =         0xad;/*        Absolute           -Z----N                                            */    
-    OPCODE LDA =         0xbd;/*        Absolute,X         -Z----N                                            */    
-    OPCODE LDA =         0xb9;/*        Absolute,Y         -Z----N                                            */    
-    OPCODE LDA =         0xa5;/*        Zero Page          -Z----N                                            */    
-    OPCODE LDA =         0xb5;/*        Zero Page,X        -Z----N                                            */    
-    OPCODE LDA =         0xa1;/*        Indexed Indirect   -Z----N                                            */    
-    OPCODE LDA =         0xb1;/*        Indirect Indexed   -Z----N                                            */
+    OPCODE LDA_I    =    0xa9;/*        Immediate          -Z----N                                            */    
+    OPCODE LDA_ABS  =    0xad;/*        Absolute           -Z----N                                            */    
+    OPCODE LDA_ABSX =    0xbd;/*        Absolute,X         -Z----N                                            */    
+    OPCODE LDA_ABSY =    0xb9;/*        Absolute,Y         -Z----N                                            */    
+    OPCODE LDA_ZP   =    0xa5;/*        Zero Page          -Z----N                                            */    
+    OPCODE LDA_ZPX  =    0xb5;/*        Zero Page,X        -Z----N                                            */    
+    OPCODE LDA_IX   =    0xa1;/*        Indexed Indirect   -Z----N                                            */    
+    OPCODE LDA_XI   =    0xb1;/*        Indirect Indexed   -Z----N                                            */
     /**
         Load Index X with Memory
+
+
+        ORIGINAL MNEMONIC: LDX
+
+        Possible modes:
+        	Immediate
+        	Absolute
+        	Absolute Y
+        	Zero Page
+        	Zero Page Y
     **/    
-    OPCODE LDX =         0xa2;/*        Immediate          -Z----N                                            */    
-    OPCODE LDX =         0xae;/*        Absolute           -Z----N                                            */    
-    OPCODE LDX =         0xbe;/*        Absolute,Y         -Z----N                                            */    
-    OPCODE LDX =         0xa6;/*        Zero Page          -Z----N                                            */    
-    OPCODE LDX =         0xb6;/*        Zero Page,Y        -Z----N                                            */    
+    OPCODE LDX_I    =    0xa2;/*        Immediate          -Z----N                                            */    
+    OPCODE LDX_ABS  =    0xae;/*        Absolute           -Z----N                                            */    
+    OPCODE LDX_ABSY =    0xbe;/*        Absolute,Y         -Z----N                                            */    
+    OPCODE LDX_ZP   =    0xa6;/*        Zero Page          -Z----N                                            */    
+    OPCODE LDX_ZPY  =    0xb6;/*        Zero Page,Y        -Z----N                                            */    
     /**
         Load Index Y with Memory
+
+        ORIGINAL MNEMONIC: LDY
+
+        Possible modes:
+        	Immediate
+        	Absolute
+        	Absolute X
+        	Zero Page
+        	Zero Page X
     **/
-    OPCODE LDY =         0xa0;/*        Immediate          -Z----N                                            */    
-    OPCODE LDY =         0xac;/*        Absolute           -Z----N                                            */    
-    OPCODE LDY =         0xbc;/*        Absolute,X         -Z----N                                            */    
-    OPCODE LDY =         0xa4;/*        Zero Page          -Z----N                                            */    
-    OPCODE LDY =         0xb4;/*        Zero Page,X        -Z----N                                            */
+    OPCODE LDY_I    =    0xa0;/*        Immediate          -Z----N                                            */    
+    OPCODE LDY_ABS  =    0xac;/*        Absolute           -Z----N                                            */    
+    OPCODE LDY_ABSX =    0xbc;/*        Absolute,X         -Z----N                                            */    
+    OPCODE LDY_ZP   =    0xa4;/*        Zero Page          -Z----N                                            */    
+    OPCODE LDY_ZPX  =    0xb4;/*        Zero Page,X        -Z----N                                            */
     /**
         Shift One Bit Right (Memory or Accumulator)
+
+        ORIGINAL MNEMONIC: LSR
+
+        Possible modes:
+        	Accumulator
+        	Absolute
+        	Absolute X
+        	Zero Page
+        	Zero Page X
     **/    
-    OPCODE LSR =         0x4a;/*        Accumulator        CZ----N                                            */    
-    OPCODE LSR =         0x4e;/*        Absolute           CZ----N                                            */    
-    OPCODE LSR =         0x5e;/*        Absolute,X         CZ----N                                            */    
-    OPCODE LSR =         0x46;/*        Zero Page          CZ----N                                            */    
-    OPCODE LSR =         0x56;/*        Zero Page,X        CZ----N                                            */    
+    OPCODE LSR_ACC  =    0x4a;/*        Accumulator        CZ----N                                            */    
+    OPCODE LSR_ABS  =    0x4e;/*        Absolute           CZ----N                                            */    
+    OPCODE LSR_ABSX =    0x5e;/*        Absolute,X         CZ----N                                            */    
+    OPCODE LSR_ZP   =    0x46;/*        Zero Page          CZ----N                                            */    
+    OPCODE LSR_ZPX  =    0x56;/*        Zero Page,X        CZ----N                                            */    
     /***                                                                                                      */
     OPCODE NOP =         0xea;/*        Implied            -------         No Operation                       */    
     /**
         OR Memory with Accumulator
+
+        ORIGINAL MNEMONIC: ORA
+
+        Possible modes:
+        	Immediate
+        	Absolute
+        	Absolute X
+        	Absolute Y
+        	Zero Page
+        	Zero Page X
+        	Indexed Indirect
+        	Indirect Indexed
     *                                                                                                         */
-    OPCODE ORA =         0x09;/*        Immediate          -Z----N                                            */    
-    OPCODE ORA =         0x0d;/*        Absolute           -Z----N                                            */    
-    OPCODE ORA =         0x1d;/*        Absolute,X         -Z----N                                            */    
-    OPCODE ORA =         0x19;/*        Absolute,Y         -Z----N                                            */    
-    OPCODE ORA =         0x05;/*        Zero Page          -Z----N                                            */    
-    OPCODE ORA =         0x15;/*        Zero Page,X        -Z----N                                            */    
-    OPCODE ORA =         0x01;/*        Indexed Indirect   -Z----N                                            */    
-    OPCODE ORA =         0x11;/*        Indirect Indexed   -Z----N                                            */
+    OPCODE ORA_I    =    0x09;/*        Immediate          -Z----N                                            */    
+    OPCODE ORA_ABS  =    0x0d;/*        Absolute           -Z----N                                            */    
+    OPCODE ORA_ABSX =    0x1d;/*        Absolute,X         -Z----N                                            */    
+    OPCODE ORA_ABSY =    0x19;/*        Absolute,Y         -Z----N                                            */    
+    OPCODE ORA_ZP   =    0x05;/*        Zero Page          -Z----N                                            */    
+    OPCODE ORA_ZPX  =    0x15;/*        Zero Page,X        -Z----N                                            */    
+    OPCODE ORA_IX   =    0x01;/*        Indexed Indirect   -Z----N                                            */    
+    OPCODE ORA_XI   =    0x11;/*        Indirect Indexed   -Z----N                                            */
     /***                                                                                                      */
     OPCODE PHA =         0x48;/*        Implied            -------         Push Accumulator on Stack          */    
     OPCODE PHP =         0x08;/*        Implied            -------         Push Processor Status on Stack     */    
@@ -171,12 +327,21 @@ namespace OPCODES
     OPCODE PLP =         0x28;/*        Implied            CZIDBVN         Pull Processor Status from Stack   */    
     /**
         Rotate One Bit Left (Memory or Accumulator)
+
+        ORIGINAL MNEMONIC: ROL
+
+        Possible modes:
+        	Accumulator
+        	Absolute
+        	Absolute X
+        	Zero Page
+        	Zero Page X
     *                                                                                                         */
-    OPCODE ROL =         0x2a;/*        Accumulator        CZ----N                                            */    
-    OPCODE ROL =         0x2e;/*        Absolute           CZ----N                                            */    
-    OPCODE ROL =         0x3e;/*        Absolute,X         CZ----N                                            */    
-    OPCODE ROL =         0x26;/*        Zero Page          CZ----N                                            */    
-    OPCODE ROL =         0x36;/*        Zero Page,X        CZ----N                                            */    
+    OPCODE ROL_ACC  =    0x2a;/*        Accumulator        CZ----N                                            */    
+    OPCODE ROL_ABS  =    0x2e;/*        Absolute           CZ----N                                            */    
+    OPCODE ROL_ABSX =    0x3e;/*        Absolute,X         CZ----N                                            */    
+    OPCODE ROL_ZP   =    0x26;/*        Zero Page          CZ----N                                            */    
+    OPCODE ROL_ZPX  =    0x36;/*        Zero Page,X        CZ----N                                            */    
     /**
         Rotate One Bit Right (Memory or Accumulator)
     **/
@@ -237,15 +402,82 @@ namespace OPCODES
     OPCODE TXS =         0x9a;/*        Implied            -------         Transfer Index X to Stack Register */    
     OPCODE TYA =         0x98;/*        Implied            -Z----N         Transfer Index Y to Accumulator    */    
 } 
+
+const unsigned MAX_SYSTEM_MEMORY = 0xffff;
+
+template <typename REG = U8, typename SP = U8, typename PC = U16>
 class CPU6502
 {
+public:
     CPU6502(){}
     ~CPU6502(){}
 
+public:
+	void ExecuteOpCode(){}
 
-}
+	void NextStep(){}
+
+public:
+	/** 3  8-bit Registers*/
+	REG A, X, Y;
+
+	/** 1 8-bit status flag
+		
+        Bit 7: Negative
+        Bit 6: Overflow
+        Bit 5: Always set
+        Bit 4: Clear if interrupt vectoring, set if BRK or PHP
+        Bit 3: Decimal mode (exists for compatibility, does not function on the Famicom/NES's 2A03/2A07)
+        Bit 2: Interrupt disable
+        Bit 1: Zero
+        Bit 0: Carry
+	*/
+	REG S;
+
+	/** 8-bit Stack Pointer*/
+	std::unique_ptr<SP> StackPointer;
+
+	/** 16-bit Program counter*/
+	PC ProgramCounter;
+};
+
+/**
+Memory Mapping for the NES
+
+$0000-$07FF |	$0800   2KB internal RAM
+------------------------------------------------------------------------------------------------
+$0800-$0FFF |	$0800	
+$1000-$17FF |	$0800   Mirrors of $0000-$07FF
+$1800-$1FFF |	$0800
+------------------------------------------------------------------------------------------------
+$2000-$2007 |	$0008   NES PPU registers
+------------------------------------------------------------------------------------------------
+$2008-$3FFF |	$1FF8   Mirrors of $2000-2007 (repeats every 8 bytes)
+------------------------------------------------------------------------------------------------
+$4000-$4017 |	$0018   NES APU and I/O registers
+------------------------------------------------------------------------------------------------
+$4018-$401F |	$0008   APU and I/O functionality that is normally disabled. See CPU Test Mode.
+------------------------------------------------------------------------------------------------
+$4020-$FFFF |	$BFE0   Cartridge space: PRG ROM, PRG RAM, and mapper registers (See Note)
+
+**/
+
+template <typename MEM = U8>
+class RAM{
+public:
+	RAM(){}
+
+	~RAM(){}
+public:
+	MEM AvailableMemory[MAX_SYSTEM_MEMORY];
+
+};
+
+class APU{};
+
+class PPU{};
 
 int main(int argc, char** argv)
 {
-    
+    return 0;
 }

@@ -1,10 +1,13 @@
 #include <iostream>
 #include <memory>
-
+#include <functional>
+#include <unordered_map>
 typedef const unsigned short OPCODE;
+typedef void U0;
 typedef unsigned char   U8;
 typedef unsigned short U16;
 typedef unsigned int   U32;
+typedef bool 		   BIT; // I think this is implementation defined, may cause undefined behaviour	
 
 namespace OPCODES
 {
@@ -405,40 +408,74 @@ namespace OPCODES
 
 const unsigned MAX_SYSTEM_MEMORY = 0xffff;
 
-template <typename REG = U8, typename SP = U8, typename PC = U16>
 class CPU6502
 {
 public:
-    CPU6502(){}
+    CPU6502(){
+		Functions[OPCODE::OPCODES] = this->CLC;
+    }
     ~CPU6502(){}
 
 public:
-	void ExecuteOpCode(){}
+	void ExecuteOpCode(){
+	}
 
-	void NextStep(){}
+	void Step(){
+		ProgramCounter++;
+	}
+
+	void Reset(){
+		A = X = Y = 0;
+
+		StatusFlag = 	false << 7 |
+						false << 6 |
+						true  << 5 |
+						false << 4 |
+						false << 3 |
+						false << 2 |
+						false << 1 |
+						false;
+
+	}
 
 public:
-	/** 3  8-bit Registers*/
-	REG A, X, Y;
 
-	/** 1 8-bit status flag
-		
-        Bit 7: Negative
-        Bit 6: Overflow
-        Bit 5: Always set
-        Bit 4: Clear if interrupt vectoring, set if BRK or PHP
-        Bit 3: Decimal mode (exists for compatibility, does not function on the Famicom/NES's 2A03/2A07)
-        Bit 2: Interrupt disable
-        Bit 1: Zero
-        Bit 0: Carry
-	*/
-	REG S;
+	/** 3  8-bit Registers*/
+	U8 A, X, Y;
+
+	/** 1 8-bit status flag*/
+
+	enum STATUS{
+		C = 0,	//Bit 0: Carry
+		Z,      //Bit 1: Zero
+		ID,     //Bit 2: Interrupt disable
+		D,      //Bit 3: Decimal mode (exists for compatibility, does not function on the Famicom/NES's 2A03/2A07)
+		B,      //Bit 4: Clear if interrupt vectoring, set if BRK or PHP
+		U,      //Bit 5: Always set
+		O,		//Bit 6: Overflow
+		N       //Bit 7: Negative
+	};
+
+	BIT StatusFlag[8];
 
 	/** 8-bit Stack Pointer*/
-	std::unique_ptr<SP> StackPointer;
+	std::unique_ptr<U8> StackPointer;
 
 	/** 16-bit Program counter*/
-	PC ProgramCounter;
+	U16 ProgramCounter;
+
+	/** Function pointers*/
+	std::unordered_map<OPCODE, std::function<U0> > Functions;
+
+private:
+
+	void CLC(){
+		StatusFlag[C] = false;
+	}
+
+	void NOP(){
+		1+1;
+	}
 };
 
 /**

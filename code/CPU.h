@@ -10,10 +10,7 @@
 #include "opcodes.h"
 #include "memory.h"
 
-
 static std::shared_ptr<Memory> _Memory = (std::shared_ptr<Memory>) new Memory();
-
-const unsigned MAX_SYSTEM_MEMORY = 0xffff;
 
 class CPU6502
 {
@@ -27,15 +24,18 @@ public:
 
 		Functions.insert(std::make_pair(OPCODES::CLC, &CPU6502::CLC));
 		Functions.insert(std::make_pair(OPCODES::NOP, &CPU6502::NOP));
+		Functions.insert(std::make_pair(OPCODES::ADC_I, &CPU6502::ADC_I));
     }
     ~CPU6502(){}
 
 public:
-	void ExecuteOpCode(){
+	void ExecuteOpCode(U16 opcode){
+	    (this->*Functions[opcode])();
 	}
 
 	void Step(){
 		ProgramCounter++;
+	    U16 opcode = _Memory->RAM[StackPointer];
 	}
 
 	void Reset(){
@@ -101,15 +101,19 @@ private:
 
         A = A + _Memory->RAM[StackPointer] + (U16)((bool*)&StatusFlag)[C];
 	}
+
+	void ADC_ABS()
+	{
+	    StatusFlag |= (true << C) | (true << Z) | (true << V) | (true << N);
+	    StackPointer += 0x001;
+	    ProgramCounter += 4;
+
+        A = A + _Memory->RAM[_Memory->RAM[StackPointer]] + (U16)((bool*)&StatusFlag)[C];
+	}
 };
 
 class APU{};
 
 class PPU{};
 
-int main(int argc, char** argv)
-{
-    std::shared_ptr<CPU6502> _CPU = (std::shared_ptr<CPU6502>) new CPU6502();
 
-    return 0;
-}

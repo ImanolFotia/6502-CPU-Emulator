@@ -60,162 +60,38 @@ int main(int argc, char** argv)
 		switch(opcode)
 		{
 			/** ADC OPERANDS**/
-			case OPCODES::ADC_I:
-				ROM.read((char*)&X8, 1);
-				OUT << (uint16_t)X8 << "\t\t\t" << "ADC #$" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::ADC_ABS:
-				ROM.read((char*)&X16, 2);
-				OUT << (uint16_t)X16 << "\t\t\t"  << "ADC $" << X16; 
-				offset++;
-				offset++;
-			break;
-			case OPCODES::ADC_ABSX:
-				ROM.read((char*)&X16, 2);
-				OUT<< (uint16_t)X16 << "\t\t\t"  << "ADC $" << X16 << ", X"; 
-				offset++;
-				offset++;
-			break;
-			case OPCODES::ADC_ABSY:
-				ROM.read((char*)&X16, 2);
-				OUT<< (uint16_t)X16 << "\t\t\t"  << "ADC $" << X16 << ", Y"; 
-				offset++;
-				offset++;
-			break;
-			case OPCODES::ADC_ZP:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "ADC $" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::ADC_ZPX:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "ADC $" << (uint16_t)X8 << ", X"; 
-				offset++;
-			break;
-			case OPCODES::ADC_IX:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "ADC ($" << (uint16_t)X8 << ", X)"; 
-				offset++;
-			break;
-			case OPCODES::ADC_XI:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "ADC ($" << (uint16_t)X8 << "), Y"; 
-				offset++;
-			break;
+			case OPCODES::ADC_I: ROM.read((char*)&X8, 1); OUT << (uint16_t)X8 << "\t\t\t" << "ADC #$" << (uint16_t)X8; offset++;break;
+			case OPCODES::ADC_ABS: ROM.read((char*)&X16, 2);OUT << (uint16_t)X16 << "\t\t\t"  << "ADC $" << X16; offset+=2;break;
+			case OPCODES::ADC_ABSX: ROM.read((char*)&X16, 2); OUT<< (uint16_t)X16 << "\t\t\t"  << "ADC $" << X16 << ", X"; offset+=2;break;
+			case OPCODES::ADC_ABSY:ROM.read((char*)&X16, 2);OUT<< (uint16_t)X16 << "\t\t\t"  << "ADC $" << X16 << ", Y"; offset+=2;break;
+			case OPCODES::ADC_ZP:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "ADC $" << (uint16_t)X8; offset++;break;
+			case OPCODES::ADC_ZPX:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "ADC $" << (uint16_t)X8 << ", X";offset++;break;
+			case OPCODES::ADC_IX:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "ADC ($" << (uint16_t)X8 << ", X)"; offset++;break;
+			case OPCODES::ADC_XI:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "ADC ($" << (uint16_t)X8 << "), Y"; offset++;break;
 			/** AND OPERANDS*/
-			case OPCODES::AND_I:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "AND #$" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::AND_ABS:
-				ROM.read((char*)&X16, 2);
-				OUT<< (uint16_t)X16 << "\t\t\t"  << "AND $" << X16; 
-				offset++;
-				offset++;
-			break;
-			case OPCODES::AND_ABSX:
-				ROM.read((char*)&X16, 2);
-				OUT<< (uint16_t)X16 << "\t\t\t"  << "AND $" << X16 << ", X"; 
-				offset++;
-				offset++;
-			break;
-			case OPCODES::AND_ABSY:
-				ROM.read((char*)&X16, 2);
-				OUT<< (uint16_t)X16 << "\t\t\t"  << "AND $" << X16 << ", Y"; 
-				offset++;
-				offset++;
-			break;
-			case OPCODES::AND_ZP:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "AND $" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::AND_ZPX:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "AND $" << (uint16_t)X8 << ", X"; 
-				offset++;
-			break;
-			case OPCODES::AND_IX:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "AND ($" << (uint16_t)X8 << ", X)"; 
-				offset++;
-			break;
-			case OPCODES::AND_XI:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "AND ($" << (uint16_t)X8 << "), Y"; 
-				offset++;
-			break;
-
+			case OPCODES::AND_I:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "AND #$" << (uint16_t)X8;offset++;break;
+			case OPCODES::AND_ABS:ROM.read((char*)&X16, 2);OUT<< (uint16_t)X16 << "\t\t\t"  << "AND $" << X16;offset+=2;break;
+			case OPCODES::AND_ABSX:ROM.read((char*)&X16, 2);OUT<< (uint16_t)X16 << "\t\t\t"  << "AND $" << X16 << ", X"; offset+=2;break;
+			case OPCODES::AND_ABSY:ROM.read((char*)&X16, 2);OUT<< (uint16_t)X16 << "\t\t\t"  << "AND $" << X16 << ", Y"; offset+=2;break;
+			case OPCODES::AND_ZP:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "AND $" << (uint16_t)X8;offset++;break;
+			case OPCODES::AND_ZPX:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "AND $" << (uint16_t)X8 << ", X";offset++;break;
+			case OPCODES::AND_IX:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "AND ($" << (uint16_t)X8 << ", X)";offset++;break;
+			case OPCODES::AND_XI:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "AND ($" << (uint16_t)X8 << "), Y";offset++;break;
 			/** ASL OPERANDS**/
-
-			case OPCODES::ASL_ACC:
-				OUT<< "\t\t\t\t"  << "ASL A"; 
-			break;
-			case OPCODES::ASL_ABS:
-				ROM.read((char*)&X16, 2);
-				OUT<< (uint16_t)X16 << "\t\t\t" << "ASL $" << X16; 
-				offset++;
-				offset++;
-			break;
-			case OPCODES::ASL_ABSX:
-				ROM.read((char*)&X16, 2);
-				OUT<< (uint16_t)X16 << "\t\t\t"  << "ASL $" << X16 << ", X"; 
-				offset++;
-				offset++;
-			break;
-			case OPCODES::ASL_ZP:
-				ROM.read((char*)&X16, 2);
-				OUT<< (uint16_t)X16 << "\t\t\t"  << "ASL $" << X16 << ", Y"; 
-				offset++;
-				offset++;
-			break;
-			case OPCODES::ASL_ZPX:
-				ROM.read((char*)&X16, 2);
-				OUT<< (uint16_t)X16 << "\t\t\t"  << "ASL $" << X16 << ", Y"; 
-				offset++;
-				offset++;
-			break;
-
+			case OPCODES::ASL_ACC:OUT<< "\t\t\t\t"  << "ASL A";break;
+			case OPCODES::ASL_ABS:ROM.read((char*)&X16, 2);OUT<< (uint16_t)X16 << "\t\t\t" << "ASL $" << X16;offset+=2;break;
+			case OPCODES::ASL_ABSX:ROM.read((char*)&X16, 2);OUT<< (uint16_t)X16 << "\t\t\t"  << "ASL $" << X16 << ", X";offset+=2;break;
+			case OPCODES::ASL_ZP:ROM.read((char*)&X16, 2);OUT<< (uint16_t)X16 << "\t\t\t"  << "ASL $" << X16 << ", Y";offset+=2;break;
+			case OPCODES::ASL_ZPX:ROM.read((char*)&X16, 2);OUT<< (uint16_t)X16 << "\t\t\t"  << "ASL $" << X16 << ", Y";offset+=2;break;
 			/****/
-
-			case OPCODES::BCC:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "BCC $" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::BCS:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "BCS $" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::BEQ:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "BEQ $" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::BMI:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "BMI $" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::BNE:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "BNE $" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::BPL:
-				ROM.read((char*)&X16, 1);
-				OUT<< (uint16_t)X16 << "\t\t\t"  << "BPL $" << (uint16_t)X8; 
-				offset++;
-			break;
-			case OPCODES::BRK:
-				OUT << "\t\t\t\t"  << "BRK"; 
-			break;
-			case OPCODES::BVC:
-				ROM.read((char*)&X8, 1);
-				OUT<< (uint16_t)X8 << "\t\t\t"  << "BVC $" << (uint16_t)X8; 
+			case OPCODES::BCC:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "BCC $" << (uint16_t)X8;offset++;break;
+			case OPCODES::BCS:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "BCS $" << (uint16_t)X8;offset++;break;
+			case OPCODES::BEQ:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "BEQ $" << (uint16_t)X8;offset++;break;
+			case OPCODES::BMI:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "BMI $" << (uint16_t)X8;offset++;break;
+			case OPCODES::BNE:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "BNE $" << (uint16_t)X8;offset++;break;
+			case OPCODES::BPL:ROM.read((char*)&X16, 1);OUT<< (uint16_t)X16 << "\t\t\t"  << "BPL $" << (uint16_t)X8;offset++;break;
+			case OPCODES::BRK:OUT << "\t\t\t\t"  << "BRK";break;
+			case OPCODES::BVC:ROM.read((char*)&X8, 1);OUT<< (uint16_t)X8 << "\t\t\t"  << "BVC $" << (uint16_t)X8; 
 				offset++;
 			break;
 			case OPCODES::BVS:

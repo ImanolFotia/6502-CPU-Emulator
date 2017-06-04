@@ -213,7 +213,7 @@ namespace OPCODES
         	Absolute
     **/
     OPCODE JMP_ABS =      0x4c;/*        Absolute           -------         Jump to New Location               */
-    OPCODE JMP_I   =      0x6c;/*        Indirect           -------         Jump to New Location               */
+    OPCODE JMP_IN  =      0x6c;/*        Indirect           -------         Jump to New Location               */
     OPCODE JSR     =      0x20;/*        Absolute           -------         Jump to New Location
                                                                                 (Saving Return Address)       */
     /**

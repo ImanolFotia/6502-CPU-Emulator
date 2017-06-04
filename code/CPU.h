@@ -20,7 +20,7 @@ typedef void(CPU6502::*func)();
 public:
     CPU6502(){
 
-        StackPointer = 0x0100;
+        StackPointer = 0x100;
 
 		Functions.insert(std::make_pair(OPCODES::CLC, &CPU6502::CLC));
 		Functions.insert(std::make_pair(OPCODES::NOP, &CPU6502::NOP));
@@ -73,7 +73,7 @@ public:
 	U8 StatusFlag;
 
 	/** 8-bit Stack Pointer*/
-	U16 StackPointer;
+	U8 StackPointer;
 
 	/** 16-bit Program counter*/
 	U16 ProgramCounter;

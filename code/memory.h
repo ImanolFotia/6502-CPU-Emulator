@@ -28,6 +28,11 @@ public:
 	Memory(){}
 
 	~Memory(){}
+
+	void read(){}
+
+	void write(){}
+
 public:
     /*----------------------------------*/
     U16 RAM_OFFSET = 0x0000;

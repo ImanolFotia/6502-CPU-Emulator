@@ -1,6 +1,6 @@
 #pragma once
 
-typedef const unsigned short OPCODE;
+typedef unsigned short OPCODE;
 typedef void U0;
 typedef unsigned char   U8;
 typedef unsigned short U16;

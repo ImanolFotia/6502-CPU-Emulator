@@ -5,6 +5,9 @@
 
 #include "memory.h"
 #include "CPU.h"
+#define GLEW STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 const unsigned MAX_SYSTEM_MEMORY = 0xffff;
 
@@ -31,7 +34,7 @@ int main(int argc, char** argv)
     unsigned char* buffer = new unsigned char[16];
     NESROM.read((char*)buffer, 16);
 
-    if(buffer[0] != 'N' || buffer[1] != 'E' || buffer[2] != 'S'){
+    if(buffer[0] != 'N' || buffer[1] != 'E' || buffer[2] != 'S') {
         std::cout << "Error: Not a NES ROM file. Aborting." << std::endl;
         std::exit(1);
     }
@@ -41,6 +44,12 @@ int main(int argc, char** argv)
     std::cout << "PRG ROM: " << buffer[4] * 16348 << std::endl;
     std::cout << "CHR ROM: " << buffer[5] * 8192 << std::endl;
     std::cout << "PRG RAM: " << buffer[8] * 8192 << std::endl;
+
+    GLFWwindow* window = glfwCreateWindow(1024, 768, "NES Emulator", 0, 0);
+    glfwMakeContextCurrent(window);
+
+    glewExperimental = true;
+    glewInit();
 
     return 0;
 }

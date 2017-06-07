@@ -3,8 +3,8 @@
 #include <memory>
 #include <cstdlib>
 
-#include "memory.h"
-#include "CPU.h"
+#include "include/memory.h"
+#include "include/CPU.h"
 #define GLEW STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     std::shared_ptr<CPU6502> _CPU = (std::shared_ptr<CPU6502>) new CPU6502();
 
     std::cout << "Loading INES ROM..." << std::endl;
-    std::ifstream NESROM("smb.nes", std::ios::binary);
+    std::ifstream NESROM("ROMS/smb.nes", std::ios::binary);
 
     unsigned char* buffer = new unsigned char[16];
     NESROM.read((char*)buffer, 16);
@@ -45,11 +45,34 @@ int main(int argc, char** argv)
     std::cout << "CHR ROM: " << buffer[5] * 8192 << std::endl;
     std::cout << "PRG RAM: " << buffer[8] * 8192 << std::endl;
 
-    GLFWwindow* window = glfwCreateWindow(1024, 768, "NES Emulator", 0, 0);
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    GLFWwindow* window = glfwCreateWindow(256, 240, "NES Emulator", NULL, NULL);
+    if (window == NULL)
+    {
+        std::cout << "Failed to create GLFW window" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
     glfwMakeContextCurrent(window);
 
     glewExperimental = true;
     glewInit();
+
+
+    while(!glfwWindowShouldClose(window))
+    {
+        glfwPollEvents();
+        glClear(GL_COLOR_BUFFER_BIT);
+        glClearColor(0.3, 0.6, 0.3, 1.0);
+
+        glfwSwapBuffers(window);
+    }
+
+    glfwTerminate();
 
     return 0;
 }

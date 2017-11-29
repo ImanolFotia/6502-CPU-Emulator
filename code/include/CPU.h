@@ -20,7 +20,7 @@ typedef void(CPU6502::*func)();
 public:
     CPU6502(){
 
-        StackPointer = 0x100;
+        StackPointer = 0x00;
 
 		Functions.insert(std::make_pair(OPCODES::CLC, &CPU6502::CLC));
 		Functions.insert(std::make_pair(OPCODES::NOP, &CPU6502::NOP));
@@ -34,8 +34,10 @@ public:
 	}
 
 	void Step(){
-		ProgramCounter++;
+		this->ProgramCounter++;
 	    U16 opcode = _Memory->RAM[StackPointer];
+
+		ExecuteOpCode(opcode);
 	}
 
 	void Reset(){
@@ -90,7 +92,7 @@ private:
 
 	void NOP(){
 	    ProgramCounter += 2;
-		1+1;
+		((void)0);
 	}
 
 	void ADC_I()

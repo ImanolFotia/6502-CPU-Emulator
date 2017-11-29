@@ -7,6 +7,8 @@ ifeq "$(OS)" "Windows_NT"
 EXE = NES Emulator.exe
 	LDFLAGS = -lopengl32 -lglu32 -lglut32 -lglfw3.dll.a -lopengl32 -lgdi32 -lglew32
 	CXXFLAGS= -g -std=c++11 -Wall -pedantic
+	#Specify the location of GLFW3 and GLEW in the following field
+	INCLUDES = "path/to/glew" "path/to/glfw3"
 endif
 
 # OS X
@@ -16,4 +18,4 @@ ifeq "$(OSTYPE)" "darwin"
 endif
 
 $(EXE) : main.cpp
-	g++ -o $@ $< $(CXXFLAGS) $(LDFLAGS)
+	g++ -o $@ $< $(CXXFLAGS) $(LDFLAGS) 

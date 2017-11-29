@@ -2,6 +2,8 @@
 
 #include "types.h"
 
+//Information extracted from: https://wiki.nesdev.com/w/index.php/CPU_memory_map
+
 /**
 Memory Mapping for the NES
 

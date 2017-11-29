@@ -4,6 +4,9 @@
 
 namespace OPCODES
 {
+
+///Information extracted from: http://www.6502.org/tutorials/6502opcodes.html
+
 ///    Type---MNEMONIC-----OPCODE------ADDRESING MODE--------FLAGS--------Comments------------------------------
     /**
         Add Memory to Accumulator with Carry

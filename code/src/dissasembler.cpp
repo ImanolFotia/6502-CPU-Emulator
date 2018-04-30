@@ -3,7 +3,7 @@
 #include <string>
 #include  <iomanip>
 
-#include "opcodes.h"
+#include "../include/opcodes.h"
 
 using namespace std;
 

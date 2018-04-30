@@ -4,11 +4,12 @@ EXE = NES_Emulator
 	CXXFLAGS= -g -std=c++11 -Wall -pedantic
 # Windows (cygwin)
 ifeq "$(OS)" "Windows_NT"
-EXE = NES Emulator.exe
-	LDFLAGS = -lopengl32 -lglu32 -lglut32 -lglfw3.dll.a -lopengl32 -lgdi32 -lglew32
-	CXXFLAGS= -g -std=c++11 -Wall -pedantic
+EXE = bin/NESEmulator.exe
+	LDFLAGS = -lopengl32 "C:/Users/Imanol/Documents/Code/C++/common-libs/glew-2.0.0/lib/Release/Win32/libglew32.dll.a" "C:/Users/Imanol/Documents/Code/C++/common-libs/glfw-3.2.1.bin.WIN32/lib-mingw/libglfw3dll.a" -lgdi32 
+	CXXFLAGS= -g --std=c++11 -Wall -pedantic
 	#Specify the location of GLFW3 and GLEW in the following field
-	INCLUDES = "path/to/glew" "path/to/glfw3"
+	INC_GLEW = "C:/Users/Imanol/Documents/Code/C++/common-libs/glew-2.0.0/include"  
+	INC_GLFW = "C:/Users/Imanol/Documents/Code/C++/common-libs/glfw-3.2.1.bin.WIN32/include"
 endif
 
 # OS X
@@ -17,5 +18,38 @@ ifeq "$(OSTYPE)" "darwin"
 	CXXFLAGS= -g -std=c++11 -Wall -pedantic
 endif
 
-$(EXE) : main.cpp
-	g++ -o $@ $< $(CXXFLAGS) $(LDFLAGS) 
+OBJ_DIR = ./obj
+
+# find cpp files in subdirectories
+#SOURCES := $(shell find . -name '*.cpp') 
+SOURCES := ./main.cpp ./src/CPU.cpp
+
+OBJECTS := $(SOURCES:.cpp=.o)
+OBJECTS := $(subst ./,obj/, $(OBJECTS))
+
+# find headers
+HEADERS := $(shell find . -name '*.h')
+
+
+all: $(OBJ_DIR)/main.o $(OBJ_DIR)/src/CPU.o $(EXE) bin/tools/dissasembler
+
+emulator: $(OBJ_DIR)/main.o $(OBJ_DIR)/src/CPU.o $(EXE)
+
+tools: bin/tools/dissasembler
+
+$(OBJ_DIR)/main.o:
+	-@mkdir -p ./obj 
+	$(CXX) -I$(INC_GLEW) -I$(INC_GLFW) --std=c++11 -c ./main.cpp -o $@
+
+$(OBJ_DIR)/src/CPU.o:
+	-@mkdir -p ./obj/src
+	$(CXX) -I$(INC_GLEW) -I$(INC_GLFW) --std=c++11 -c ./src/CPU.cpp -o $@
+
+$(EXE) : 
+	$(CXX) -o $@  $(OBJECTS) $(CXXFLAGS) $(LDFLAGS)
+
+bin/tools/dissasembler :
+	-@mkdir -p ./bin/tools
+	$(CXX) ./src/dissasembler.cpp $(CXXFLAGS) -o $@
+
+

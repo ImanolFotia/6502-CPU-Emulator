@@ -26,7 +26,7 @@ The format of the header is as follows:
 
 int main(int argc, char** argv)
 {
-    std::shared_ptr<CPU6502> _CPU = (std::shared_ptr<CPU6502>) new CPU6502();
+    std::shared_ptr<CPU::CPU6502> _CPU = (std::shared_ptr<CPU::CPU6502>) new CPU::CPU6502();
 
     std::cout << "Loading INES ROM..." << std::endl;
     std::ifstream NESROM("ROMS/smb.nes", std::ios::binary);
@@ -46,9 +46,9 @@ int main(int argc, char** argv)
     std::cout << "PRG RAM: " << buffer[8] * 8192 << std::endl;
 
     glfwInit();
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     GLFWwindow* window = glfwCreateWindow(256, 240, "NES Emulator", NULL, NULL);
     if (window == NULL)

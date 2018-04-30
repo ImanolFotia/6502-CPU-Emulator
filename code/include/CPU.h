@@ -1,5 +1,4 @@
-#define STRICT
-#define WIN32_LEAN_AND_MEAN
+#pragma once
 
 #include <iostream>
 #include <memory>
@@ -12,47 +11,23 @@
 
 static std::shared_ptr<Memory> _Memory = (std::shared_ptr<Memory>) new Memory();
 
+namespace CPU{
 class CPU6502
 {
-
-typedef void(CPU6502::*func)();
-
-public:
-    CPU6502(){
-
-        StackPointer = 0x00;
-
-		Functions.insert(std::make_pair(OPCODES::CLC, &CPU6502::CLC));
-		Functions.insert(std::make_pair(OPCODES::NOP, &CPU6502::NOP));
-		Functions.insert(std::make_pair(OPCODES::ADC_I, &CPU6502::ADC_I));
-    }
-    ~CPU6502(){}
+	typedef void(CPU6502::*func)();
 
 public:
-	void ExecuteOpCode(U16 opcode){
-	    (this->*Functions[opcode])();
-	}
+    CPU6502();
+    virtual ~CPU6502(){}
 
-	void Step(){
-		this->ProgramCounter++;
-	    U16 opcode = _Memory->RAM[StackPointer];
 
-		ExecuteOpCode(opcode);
-	}
+public:
 
-	void Reset(){
-		A = X = Y = 0;
+	void ExecuteOpCode(U16 opcode);
 
-		StatusFlag = 	(false << N) |
-						(false << V) |
-						(true  << U) |
-						(false << B) |
-						(false << D) |
-						(false << I) |
-						(false << Z) |
-						(false << C);
+	void Step();
 
-	}
+	void Reset();
 
 public:
 
@@ -64,7 +39,7 @@ public:
 	enum STATUS{
 		C = 0,	//Bit 0: Carry
 		Z,      //Bit 1: Zero
-		I,     //Bit 2: Interrupt disable
+		I,      //Bit 2: Interrupt disable
 		D,      //Bit 3: Decimal mode (exists for compatibility, does not function on the Famicom/NES's 2A03/2A07)
 		B,      //Bit 4: Clear if interrupt vectoring, set if BRK or PHP
 		U,      //Bit 5: Always set
@@ -85,35 +60,12 @@ public:
 
 private:
 
-	void CLC(){
-	    ProgramCounter += 2;
-		StatusFlag |= (false << C);
-	}
-
-	void NOP(){
-	    ProgramCounter += 2;
-		((void)0);
-	}
-
-	void ADC_I()
-	{
-	    StatusFlag |= (true << C) | (true << Z) | (true << V) | (true << N);
-	    StackPointer += 0x001;
-	    ProgramCounter += 2;
-
-        A = A + _Memory->RAM[StackPointer] + (U16)((bool*)&StatusFlag)[C];
-	}
-
-	void ADC_ABS()
-	{
-	    StatusFlag |= (true << C) | (true << Z) | (true << V) | (true << N);
-	    StackPointer += 0x001;
-	    ProgramCounter += 4;
-
-        A = A + _Memory->RAM[_Memory->RAM[StackPointer]] + (U16)((bool*)&StatusFlag)[C];
-	}
+	void CLC();
+	void NOP();
+	void ADC_I();
+	void ADC_ABS();
 };
-
+}
 class APU{};
 
 class PPU{};

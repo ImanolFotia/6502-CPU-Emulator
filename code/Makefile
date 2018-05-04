@@ -5,11 +5,11 @@ EXE = NES_Emulator
 # Windows (cygwin)
 ifeq "$(OS)" "Windows_NT"
 EXE = bin/NESEmulator.exe
-	LDFLAGS = -lopengl32 "glew-2.0.0/lib/Release/Win32/libglew32.dll.a" "glfw-3.2.1.bin.WIN32/lib-mingw/libglfw3dll.a" -lgdi32 
+	LDFLAGS = -lopengl32 "C:/Users/Imanol/Documents/Code/C++/common-libs/glew-2.0.0/lib/Release/Win32/libglew32.dll.a" "C:/Users/Imanol/Documents/Code/C++/common-libs/glfw-3.2.1.bin.WIN32/lib-mingw/libglfw3dll.a" -lgdi32 
 	CXXFLAGS= -g --std=c++11 -Wall -pedantic
 	#Specify the location of GLFW3 and GLEW in the following field
-	INC_GLEW = "glew-2.0.0/include"  
-	INC_GLFW = "glfw-3.2.1.bin.WIN32/include"
+	INC_GLEW = "C:/Users/Imanol/Documents/Code/C++/common-libs/glew-2.0.0/include"  
+	INC_GLFW = "C:/Users/Imanol/Documents/Code/C++/common-libs/glfw-3.2.1.bin.WIN32/include"
 endif
 
 # OS X

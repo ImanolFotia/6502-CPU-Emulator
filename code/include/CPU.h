@@ -56,14 +56,24 @@ public:
 	U16 ProgramCounter;
 
 	/** Function pointers*/
-	std::unordered_map<OPCODE, func> Functions;
+	std::unordered_map<OPCODE, func> _functions;
 
 private:
 
 	void CLC();
 	void NOP();
+
+	/*
+		Check include/Functions/ADP.cpp
+	*/
 	void ADC_I();
+	void ADC_ZP();
+	void ADC_ZPX();
 	void ADC_ABS();
+	void ADC_ABSX();
+	void ADC_ABSY();
+	void ADC_IX();
+	void ADC_XI();
 };
 }
 class APU{};

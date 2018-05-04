@@ -9,13 +9,20 @@ namespace CPU
 
         StackPointer = 0x00;
 
-		Functions.insert(std::make_pair(OPCODES::CLC, &CPU6502::CLC));
-		Functions.insert(std::make_pair(OPCODES::NOP, &CPU6502::NOP));
-		Functions.insert(std::make_pair(OPCODES::ADC_I, &CPU6502::ADC_I));
+		_functions.insert(std::make_pair(OPCODES::CLC, &CPU6502::CLC));
+		_functions.insert(std::make_pair(OPCODES::NOP, &CPU6502::NOP));
+		_functions.insert(std::make_pair(OPCODES::ADC_I, &CPU6502::ADC_I));
+		_functions.insert(std::make_pair(OPCODES::ADC_ZP, &CPU6502::ADC_ZP));
+		_functions.insert(std::make_pair(OPCODES::ADC_ZPX, &CPU6502::ADC_ZPX));
+		_functions.insert(std::make_pair(OPCODES::ADC_ABS, &CPU6502::ADC_ABS));
+		_functions.insert(std::make_pair(OPCODES::ADC_ABSX, &CPU6502::ADC_ABSX));
+		_functions.insert(std::make_pair(OPCODES::ADC_ABSY, &CPU6502::ADC_ABSY));
+		_functions.insert(std::make_pair(OPCODES::ADC_IX, &CPU6502::ADC_IX));
+		_functions.insert(std::make_pair(OPCODES::ADC_XI, &CPU6502::ADC_XI));
     }
 
 	void CPU6502::ExecuteOpCode(U16 opcode){
-	    (this->*Functions[opcode])();
+	    (this->*_functions[opcode])();
 	}
 
 	void CPU6502::Step(){
@@ -41,29 +48,14 @@ namespace CPU
 
 	void CPU6502::CLC(){
 	    ProgramCounter += 2;
+	    StackPointer += 0x001;
 		StatusFlag |= (false << C);
 	}
 
 	void CPU6502::NOP(){
 	    ProgramCounter += 2;
+	    StackPointer += 0x001;
 		((void)0);
 	}
 
-	void CPU6502::ADC_I()
-	{
-	    StatusFlag |= (true << C) | (true << Z) | (true << V) | (true << N);
-	    StackPointer += 0x001;
-	    ProgramCounter += 2;
-
-        A = A + _Memory->RAM[StackPointer] + (U16)((bool*)&StatusFlag)[C];
-	}
-
-	void CPU6502::ADC_ABS()
-	{
-	    StatusFlag |= (true << C) | (true << Z) | (true << V) | (true << N);
-	    StackPointer += 0x001;
-	    ProgramCounter += 4;
-
-        A = A + _Memory->RAM[_Memory->RAM[StackPointer]] + (U16)((bool*)&StatusFlag)[C];
-	}
 }

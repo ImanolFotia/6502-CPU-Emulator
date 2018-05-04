@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     std::shared_ptr<CPU::CPU6502> _CPU = (std::shared_ptr<CPU::CPU6502>) new CPU::CPU6502();
 
     std::cout << "Loading INES ROM..." << std::endl;
-    std::ifstream NESROM("ROMS/smb.nes", std::ios::binary);
+    std::ifstream NESROM(std::string(argv[1]), std::ios::binary);
 
     unsigned char* buffer = new unsigned char[16];
     NESROM.read((char*)buffer, 16);
